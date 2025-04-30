@@ -20,3 +20,13 @@ module "vnet" {
   resource_group_name = azurerm_resource_group.main.name
 }
 
+terraform {
+  backend "azurerm" {
+    resource_group_name  = "rg-bumima-dev"
+    storage_account_name = "tfstateyourname"         # Must be globally unique
+    container_name       = "tfstate"
+    key                  = "terraform.tfstate"
+  }
+}
+
+
