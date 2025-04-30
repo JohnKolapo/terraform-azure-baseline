@@ -23,7 +23,7 @@ module "vnet" {
 terraform {
   backend "azurerm" {
     resource_group_name  = "rg-bumima-dev"
-    storage_account_name = "tfstateyourname"         # Must be globally unique
+    storage_account_name = "tfstatejohnkolapo"   # FIXED THIS
     container_name       = "tfstate"
     key                  = "terraform.tfstate"
   }
