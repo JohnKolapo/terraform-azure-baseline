@@ -16,7 +16,7 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "main" {
-  name = "rg-bumima-dev"
+  name     = "rg-bumima-dev"
   location = var.location
 }
 module "vnet" {
