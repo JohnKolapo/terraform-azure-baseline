@@ -8,6 +8,7 @@ provider "azurerm" {
 
 resource "azurerm_resource_group" "main" {
   name = "rg-bumima-dev"
+  location = "canadacentral"
 }
 module "vnet" {
   source              = "./modules/vnet"
@@ -16,7 +17,7 @@ module "vnet" {
   subnet_name         = "subnet-core"
   subnet_prefix       = "10.0.1.0/24"
   location            = var.location
-  resource_group_name = data.azurerm_resource_group.main.name
+  resource_group_name = azurerm_resource_group.main.name
 }
 
 terraform {
