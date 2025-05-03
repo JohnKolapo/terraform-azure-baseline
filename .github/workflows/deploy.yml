@@ -47,12 +47,12 @@ jobs:
             -var="tenant_id=${{ secrets.ARM_TENANT_ID }}" \
             -out=tfplan
 
-      - name: Archive Plan on Failure
-        if: failure()
-        uses: actions/upload-artifact@v3
-        with:
-          name: terraform-plan-failure
-          path: tfplan
+- name: Archive Plan on Failure
+  if: failure()
+  uses: actions/upload-artifact@v4
+  with:
+    name: terraform-plan-failure
+    path: tfplan
 
       - name: Terraform Apply (auto-approved)
         if: github.ref == 'refs/heads/main'
