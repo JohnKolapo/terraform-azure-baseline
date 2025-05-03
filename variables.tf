@@ -1,15 +1,3 @@
-variable "location" {
-  description = "Azure region for deployment"
-  type        = string
-  default     = "canadacentral"
-}
-
-variable "resource_group_name" {
-  description = "Azure Resource Group name"
-  type        = string
-  default     = "rg-bumima-dev"
-}
-
 variable "subscription_id" {
   type        = string
   description = "Azure subscription ID"
@@ -17,16 +5,16 @@ variable "subscription_id" {
 
 variable "client_id" {
   type        = string
-  description = "Azure client ID"
+  description = "Azure SP client ID"
 }
 
 variable "client_secret" {
   type        = string
-  description = "Azure client secret"
+  description = "Azure SP client secret"
+  sensitive   = true
 }
 
 variable "tenant_id" {
   type        = string
-  description = "Azure tenant ID"
+  description = "Azure AD tenant ID"
 }
-
