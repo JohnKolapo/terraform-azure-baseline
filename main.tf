@@ -1,3 +1,12 @@
+terraform {
+  backend "azurerm" {
+    resource_group_name  = "rg-bumima-dev"
+    storage_account_name = "tfstatejohnkolapo03" # FIXED THIS
+    container_name       = "tfstate"
+    key                  = "terraform.tfstate"
+  }
+}
+
 provider "azurerm" {
   features {}
   subscription_id = var.subscription_id
@@ -8,7 +17,7 @@ provider "azurerm" {
 
 resource "azurerm_resource_group" "main" {
   name = "rg-bumima-dev"
-  location = "canadacentral"
+  location = azurerm_resource_group.main.location
 }
 module "vnet" {
   source              = "./modules/vnet"
@@ -18,15 +27,6 @@ module "vnet" {
   subnet_prefix       = "10.0.1.0/24"
   location            = var.location
   resource_group_name = azurerm_resource_group.main.name
-}
-
-terraform {
-  backend "azurerm" {
-    resource_group_name  = "rg-bumima-dev"
-    storage_account_name = "tfstatejohnkolapo03" # FIXED THIS
-    container_name       = "tfstate"
-    key                  = "terraform.tfstate"
-  }
 }
 
 
