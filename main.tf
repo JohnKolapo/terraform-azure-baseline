@@ -17,14 +17,14 @@ provider "azurerm" {
 
 resource "azurerm_resource_group" "main" {
   name = "rg-bumima-dev"
-  location = azurerm_resource_group.main.location
+  location = var.location
 }
 module "vnet" {
   source              = "./modules/vnet"
   vnet_name           = "vnet-bumima-dev"
-  address_space       = "10.0.0.0/16"
+  address_space       = ["10.0.0.0/16"]
   subnet_name         = "subnet-core"
-  subnet_prefix       = "10.0.1.0/24"
+  subnet_prefix       = ["10.0.1.0/24"]
   location            = var.location
   resource_group_name = azurerm_resource_group.main.name
 }
