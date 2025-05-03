@@ -1,32 +1,22 @@
-terraform {
-  backend "azurerm" {
-    resource_group_name  = "rg-bumima-dev"
-    storage_account_name = "tfstatejohnkolapo03" # FIXED THIS
-    container_name       = "tfstate"
-    key                  = "terraform.tfstate"
-  }
-}
-
 provider "azurerm" {
   features {}
-  subscription_id = var.subscription_id
-  client_id       = var.client_id
-  client_secret   = var.client_secret
-  tenant_id       = var.tenant_id
 }
 
-resource "azurerm_resource_group" "main" {
-  name     = "rg-bumima-dev"
-  location = var.location
+# Fetch the existing resource group (do NOT recreate)
+data "azurerm_resource_group" "main" {
+  name = var.resource_group_name
 }
+
 module "vnet" {
   source              = "./modules/vnet"
-  vnet_name           = "vnet-bumima-dev"
-  address_space       = ["10.0.0.0/16"]
-  subnet_name         = "subnet-core"
-  subnet_prefix       = ["10.0.1.0/24"]
-  location            = var.location
-  resource_group_name = azurerm_resource_group.main.name
+  vnet_name           = var.vnet_name
+  address_space       = var.address_space
+  subnet_name         = var.subnet_name
+  subnet_prefix       = var.subnet_prefix
+  location            = data.azurerm_resource_group.main.location
+  resource_group_name = data.azurerm_resource_group.main.name
 }
 
-
+output "vnet_subnet_id" {
+  value = module.vnet.vnet_subnet_id
+}
