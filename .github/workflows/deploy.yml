@@ -25,15 +25,40 @@ jobs:
         with:
           terraform_version: 1.7.5
 
+      - name: Terraform Format Check (Lint)
+        run: terraform fmt -check -recursive
+
       - name: Terraform Init
         run: terraform init
 
       - name: Terraform Validate
         run: terraform validate
 
+      - name: Run tfsec (Security Scan)
+        uses: aquasecurity/tfsec-action@v1.0.0
+
       - name: Terraform Plan
-        run: terraform plan -input=false -var="subscription_id=${{ secrets.ARM_SUBSCRIPTION_ID }}" -var="client_id=${{ secrets.ARM_CLIENT_ID }}" -var="client_secret=${{ secrets.ARM_CLIENT_SECRET }}" -var="tenant_id=${{ secrets.ARM_TENANT_ID }}"
+        id: plan
+        run: |
+          terraform plan -input=false \
+            -var="subscription_id=${{ secrets.ARM_SUBSCRIPTION_ID }}" \
+            -var="client_id=${{ secrets.ARM_CLIENT_ID }}" \
+            -var="client_secret=${{ secrets.ARM_CLIENT_SECRET }}" \
+            -var="tenant_id=${{ secrets.ARM_TENANT_ID }}" \
+            -out=tfplan
+
+      - name: Archive Plan on Failure
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: terraform-plan-failure
+          path: tfplan
 
       - name: Terraform Apply (auto-approved)
         if: github.ref == 'refs/heads/main'
-        run: terraform apply -auto-approve -input=false -var="subscription_id=${{ secrets.ARM_SUBSCRIPTION_ID }}" -var="client_id=${{ secrets.ARM_CLIENT_ID }}" -var="client_secret=${{ secrets.ARM_CLIENT_SECRET }}" -var="tenant_id=${{ secrets.ARM_TENANT_ID }}"
+        run: |
+          terraform apply -auto-approve -input=false \
+            -var="subscription_id=${{ secrets.ARM_SUBSCRIPTION_ID }}" \
+            -var="client_id=${{ secrets.ARM_CLIENT_ID }}" \
+            -var="client_secret=${{ secrets.ARM_CLIENT_SECRET }}" \
+            -var="tenant_id=${{ secrets.ARM_TENANT_ID }}"
