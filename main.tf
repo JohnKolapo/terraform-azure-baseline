@@ -27,5 +27,10 @@ output "vnet_subnet_id" {
 }
 
 terraform {
-  backend "azurerm" {}
+  backend "azurerm" {
+    resource_group_name  = "rg-bumima-dev"
+    storage_account_name = "tfstatejohnkolapo03"
+    container_name       = "tfstate"
+    key                  = "terraform.tfstate"
+  }
 }
