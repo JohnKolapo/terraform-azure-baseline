@@ -1,7 +1,7 @@
 client_id           = "71a11a8e-7f9d-4e8b-9f70-5d27c9644b6b"
 client_secret       = "69cfa88a-94f8-45a5-bb3b-5113c420306b"
 subscription_id     = "4156111f-4f94-41a1-8e0d-975414eb25b5"
-tenant_id           = "5ceaf7b5-d194-4fc4-8f39-4536cb635b17"
+tenant_id           = "574bc9cd-009b-4ab9-9866-d753a59dea2d"
 resource_group_name = "rg-bumima-dev"
 location            = "canadacentral"
 vnet_name           = "vnet-bumima-dev"
