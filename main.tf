@@ -20,3 +20,7 @@ module "vnet" {
 output "vnet_subnet_id" {
   value = module.vnet.vnet_subnet_id
 }
+
+terraform {
+  backend "azurerm" {}
+}
