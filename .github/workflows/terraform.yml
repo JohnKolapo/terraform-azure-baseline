@@ -1,0 +1,21 @@
+name: Terraform Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Terraform Init
+        run: |
+          terraform init -input=false \
+            -backend-config="resource_group_name=rg-bumima-dev" \
+            -backend-config="storage_account_name=tfstatejohnkolapo03" \
+            -backend-config="container_name=tfstate" \
+            -backend-config="key=terraform.tfstate"
