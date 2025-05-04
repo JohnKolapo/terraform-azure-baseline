@@ -1,4 +1,5 @@
-vnet_name     = "vnet-bumima-dev"
-address_space = ["10.0.0.0/16"]
-subnet_name   = "subnet-core"
-subnet_prefix = ["10.0.1.0/24"]
+vnet_name       = "vnet-bumima-dev"
+address_space   = "10.0.0.0/16"
+subnet_name     = "subnet-core"
+subnet_prefix   = "10.0.1.0/24"
+location        = "canadacentral"
