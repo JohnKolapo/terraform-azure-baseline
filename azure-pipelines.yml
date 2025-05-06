@@ -4,7 +4,7 @@ trigger:
       - main
 
 variables:
-  - group: terraform-variables
+  - group: terraform-variables  # This must include ARM_CLIENT_ID, ARM_CLIENT_SECRET, etc.
 
 stages:
   - stage: LintValidate
@@ -41,41 +41,19 @@ stages:
               scriptType: pscore
               scriptLocation: inlineScript
               inlineScript: |
-                terraform init `
+                terraform init -reconfigure `
                   -backend-config="resource_group_name=$(BACKEND_RG)" `
                   -backend-config="storage_account_name=$(STORAGE_ACCOUNT_NAME)" `
                   -backend-config="container_name=tfstate" `
                   -backend-config="key=$(BACKEND_KEY)"
 
                 terraform plan -out=tfplan
+            env:
+              ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+              ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+              ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+              ARM_TENANT_ID: $(ARM_TENANT_ID)
 
           - task: PublishPipelineArtifact@1
             inputs:
-              targetPath: $(System.DefaultWorkingDirectory)
-              artifactName: terraformPlan
-
-  - stage: ApproveAndPromoteQA
-    displayName: "Manual Approval + Deploy to QA"
-    dependsOn: Plan
-    jobs:
-      - deployment: DeployQA
-        environment: 'qa'
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                - script: echo "Simulate QA deployment"
-                  displayName: "QA Deploy Placeholder"
-
-  - stage: ApproveAndPromoteProd
-    displayName: "Manual Approval + Deploy to Prod"
-    dependsOn: ApproveAndPromoteQA
-    jobs:
-      - deployment: DeployProd
-        environment: 'prod'
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                - script: echo "Deploy to PROD — with rollback plan"
-                  displayName: "Prod Deploy Placeholder"
+              targetPath: $(System
