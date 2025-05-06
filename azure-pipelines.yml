@@ -76,9 +76,7 @@ stages:
   - stage: ApproveAndPromoteQA
     displayName: "Manual Approval + Deploy to QA"
     dependsOn: ApproveAndApplyDev
-    approval:
-      timeoutInMinutes: 60
-    jobs:
+        jobs:
       - deployment: DeployQA
         environment: 'qa'
         strategy:
@@ -91,9 +89,7 @@ stages:
   - stage: ApproveAndPromoteProd
     displayName: "Manual Approval + Deploy to Prod"
     dependsOn: ApproveAndPromoteQA
-    approval:
-      timeoutInMinutes: 60
-    jobs:
+        jobs:
       - deployment: DeployProd
         environment: 'prod'
         strategy:
