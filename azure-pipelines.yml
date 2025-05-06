@@ -12,7 +12,7 @@ stages:
     jobs:
       - job: Validate
         pool:
-          vmImage: 'ubuntu-latest'
+          name: 'Default'
         steps:
           - task: Bash@3
             inputs:
@@ -33,7 +33,7 @@ stages:
     jobs:
       - job: Plan
         pool:
-          vmImage: 'ubuntu-latest'
+          name: 'Default'
         steps:
           - task: AzureCLI@2
             inputs:
