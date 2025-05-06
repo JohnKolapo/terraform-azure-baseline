@@ -34,7 +34,7 @@ stages:
       - job: Plan
         pool:
           vmImage: 'ubuntu-latest'
-               steps:
+        steps:
           - task: AzureCLI@2
             inputs:
               azureSubscription: 'terraform-cicd-arm'
@@ -53,9 +53,9 @@ stages:
               targetPath: $(System.DefaultWorkingDirectory)
               artifactName: terraformPlan
 
-   - stage: ApproveAndPromoteQA
+  - stage: ApproveAndPromoteQA
     displayName: "Manual Approval + Deploy to QA"
-    dependsOn: ApproveAndApplyDev
+    dependsOn: Plan
     jobs:
       - deployment: DeployQA
         environment: 'qa'
