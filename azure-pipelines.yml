@@ -34,7 +34,7 @@ stages:
       - job: Plan
         pool:
           vmImage: 'ubuntu-latest'
-        steps:
+               steps:
           - task: AzureCLI@2
             inputs:
               azureSubscription: 'terraform-cicd-arm'
@@ -46,8 +46,8 @@ stages:
                   -backend-config="storage_account_name=$(STORAGE_ACCOUNT_NAME)" \
                   -backend-config="container_name=tfstate" \
                   -backend-config="key=$(BACKEND_KEY)"
-                
                 terraform plan -out=tfplan
+
           - task: PublishPipelineArtifact@1
             inputs:
               targetPath: $(System.DefaultWorkingDirectory)
