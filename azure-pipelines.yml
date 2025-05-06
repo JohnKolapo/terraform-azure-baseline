@@ -36,17 +36,18 @@ stages:
           name: 'Default'
         steps:
           - task: AzureCLI@2
-            inputs:
-              azureSubscription: 'terraform-cicd-arm'
-              scriptType: pscore
-              scriptLocation: inlineScript
-              inlineScript: |
-                terraform init \
-                  -backend-config="resource_group_name=$(BACKEND_RG)" \
-                  -backend-config="storage_account_name=$(STORAGE_ACCOUNT_NAME)" \
-                  -backend-config="container_name=tfstate" \
-                  -backend-config="key=$(BACKEND_KEY)"
-                terraform plan -out=tfplan
+  inputs:
+    azureSubscription: 'terraform-cicd-arm'
+    scriptType: pscore
+    scriptLocation: inlineScript
+    inlineScript: |
+      terraform init `
+        -backend-config="resource_group_name=$(BACKEND_RG)" `
+        -backend-config="storage_account_name=$(STORAGE_ACCOUNT_NAME)" `
+        -backend-config="container_name=tfstate" `
+        -backend-config="key=$(BACKEND_KEY)"
+
+      terraform plan -out=tfplan
 
           - task: PublishPipelineArtifact@1
             inputs:
