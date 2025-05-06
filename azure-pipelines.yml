@@ -53,30 +53,10 @@ stages:
               targetPath: $(System.DefaultWorkingDirectory)
               artifactName: terraformPlan
 
-  - stage: ApproveAndApplyDev
-    displayName: "Approval Gate + Deploy to Dev"
-    dependsOn: Plan
-    jobs:
-      - deployment: DeployDev
-        environment: 'dev'
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                - download: current
-                  artifact: terraformPlan
-                - task: AzureCLI@2
-                  inputs:
-                    azureSubscription: 'terraform-cicd-arm'
-                    scriptType: bash
-                    scriptLocation: inlineScript
-                    inlineScript: |
-                      terraform apply "tfplan"
-
-  - stage: ApproveAndPromoteQA
+   - stage: ApproveAndPromoteQA
     displayName: "Manual Approval + Deploy to QA"
     dependsOn: ApproveAndApplyDev
-        jobs:
+    jobs:
       - deployment: DeployQA
         environment: 'qa'
         strategy:
@@ -89,7 +69,7 @@ stages:
   - stage: ApproveAndPromoteProd
     displayName: "Manual Approval + Deploy to Prod"
     dependsOn: ApproveAndPromoteQA
-        jobs:
+    jobs:
       - deployment: DeployProd
         environment: 'prod'
         strategy:
