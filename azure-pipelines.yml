@@ -14,7 +14,7 @@ stages:
         pool:
           name: 'Default'
         steps:
-          - task: Bash@3
+          - task: PowerShell@2
             inputs:
               targetType: 'inline'
               script: |
@@ -38,7 +38,7 @@ stages:
           - task: AzureCLI@2
             inputs:
               azureSubscription: 'terraform-cicd-arm'
-              scriptType: bash
+              scriptType: pscore
               scriptLocation: inlineScript
               inlineScript: |
                 terraform init \
